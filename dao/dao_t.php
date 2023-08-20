@@ -140,7 +140,7 @@
                 $statement->setFetchMode(PDO::FETCH_ASSOC);
                 $rtv = $statement->FetchAll();
 
-                if (!$rtv) throw new PDOException("SQL 문구에 오류가 있습니다. ({$this->sql})");
+                if (!$rtv) throw new Exception("SQL 문구에 오류가 있습니다.");
             }
             catch (Exception $e)
             {
@@ -251,14 +251,14 @@
                         if ($val === null) $value .= "NULL";
                         else if (gettype($val) == "integer" || gettype($val) == "double") $value .= "{$val}" ;
                         else if (gettype($val) == "string") $value .= "'{$val}'";
-                        else throw new PDOException("INSERT VALUE 값이 잘못되었습니다. (".print_r($vo).")");
+                        else throw new Exception("INSERT VALUE 값이 잘못되었습니다. (".print_r($vo).")");
                     }
                 }
 
                 $this->sql = "INSERT INTO {$this->table}( {$select} ) VALUES ( {$value} )";
                 $this->Execute();
             }
-            catch (PDOException $e)
+            catch (Exception $e)
             {
                 writeLog("INSERT() :: {$e->getMessage()} ({$this->sql})");
             }
@@ -270,13 +270,13 @@
             {
                 if ($value == "" || $where == "")
                 {
-                    throw new PDOException("Value 및 Where 조건이 비어있습니다.");
+                    throw new Exception("Value 및 Where 조건이 비어있습니다.");
                 }
     
                 $this->sql = "UPDATE {$this->table} SET {$value} WHERE {$where}";
                 $this->Execute();
             }
-            catch(PDOException $e)
+            catch(Exception $e)
             {
                 writeLog("UPDATE() :: {$e->getMessage()} ({$this->sql})");
             }
@@ -288,13 +288,13 @@
             {
                 if( $where == "" )
                 {
-                    throw new PDOException("Delete Where절 조건이 설정되지 않았습니다 (".print_r($where).")");
+                    throw new Exception("Delete Where절 조건이 설정되지 않았습니다 (".print_r($where).")");
                 }
     
                 $this->sql = "DELETE FROM {$this->table} WHERE {$where}";
                 $this->Execute();
             }
-            catch(PDOException $e)
+            catch(Exception $e)
             {
                 writeLog("DELETE() :: {$e->getMessage()} ({$this->sql})");
             }
@@ -312,11 +312,11 @@
                 $statement->setFetchMode(PDO::FETCH_ASSOC);
                 $vo = $statement->FetchAll();
 
-                if( !$vo ) throw new PDOException("SQL 문구에 오류가 있습니다");
+                if( !$vo ) throw new Exception("SQL 문구에 오류가 있습니다");
 
                 $rtv = (int) $vo[0]["cnt"];
             }
-            catch(PDOException $e)
+            catch(Exception $e)
             {
                 writeLog("RowCount() :: {$e->getMessage()} ({$this->sql})");
             }
